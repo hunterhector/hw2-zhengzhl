@@ -25,6 +25,18 @@
       <name>edu.cmu.deiis.types.Token</name>
       <description/>
       <supertypeName>edu.cmu.deiis.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>pos</name>
+          <description>the part of speech of the token</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>lemma</name>
+          <description>the lemma of the token</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
     </typeDescription>
     <typeDescription>
       <name>edu.cmu.deiis.types.NGram</name>
@@ -75,6 +87,23 @@
           <name>answer</name>
           <description/>
           <rangeTypeName>edu.cmu.deiis.types.Answer</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>edu.cmu.deiis.types.Sentence</name>
+      <description>Annotate a natural sentence</description>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>edu.cmu.deiis.types.EntityMention</name>
+      <description>This annotate the entity mention from the text</description>
+      <supertypeName>edu.cmu.deiis.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>entityType</name>
+          <description>the entity type of this mention</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>

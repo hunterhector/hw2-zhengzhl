@@ -10,8 +10,8 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Wed Sep 11 13:44:28 EDT 2013
- * XML source: /home/diwang/ur-workspace/deiis-f13-homework/src/main/resources/desc/deiis_types.xml
+ * Updated by JCasGen Fri Sep 20 16:09:12 EDT 2013
+ * XML source: C:/Users/Hector/homework/hw2-zhengzhl/src/main/resources/descriptors/deiis_types.xml
  * @generated */
 public class Token extends Annotation {
   /** @generated
@@ -59,6 +59,40 @@ public class Token extends Annotation {
   @generated modifiable */
   private void readObject() {/*default - does nothing empty block */}
      
-}
+  //*--------------*
+  //* Feature: pos
+
+  /** getter for pos - gets the part of speech of the token
+   * @generated */
+  public String getPos() {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_pos == null)
+      jcasType.jcas.throwFeatMissing("pos", "edu.cmu.deiis.types.Token");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Token_Type)jcasType).casFeatCode_pos);}
+    
+  /** setter for pos - sets the part of speech of the token 
+   * @generated */
+  public void setPos(String v) {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_pos == null)
+      jcasType.jcas.throwFeatMissing("pos", "edu.cmu.deiis.types.Token");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Token_Type)jcasType).casFeatCode_pos, v);}    
+   
+    
+  //*--------------*
+  //* Feature: lemma
+
+  /** getter for lemma - gets the lemma of the token
+   * @generated */
+  public String getLemma() {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_lemma == null)
+      jcasType.jcas.throwFeatMissing("lemma", "edu.cmu.deiis.types.Token");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Token_Type)jcasType).casFeatCode_lemma);}
+    
+  /** setter for lemma - sets the lemma of the token 
+   * @generated */
+  public void setLemma(String v) {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_lemma == null)
+      jcasType.jcas.throwFeatMissing("lemma", "edu.cmu.deiis.types.Token");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Token_Type)jcasType).casFeatCode_lemma, v);}    
+  }
 
     
