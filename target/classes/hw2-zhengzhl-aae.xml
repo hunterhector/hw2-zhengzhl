@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="TestElementAnnotatorDescriptor">
+      <import name="edu.cmu.deiis.anntators.TestElementAnnotatorDescriptor"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="StanfordTokenizerDescriptor">
+      <import name="edu.cmu.deiis.anntators.StanfordTokenizerDescriptor"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="NGramDescriptor">
+      <import name="edu.cmu.deiis.anntators.NGramDescriptor"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>hw2-zhengzhl-aae</name>
+    <description/>
+    <version>1.0</version>
+    <vendor/>
+    <configurationParameters/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>StanfordTokenizerDescriptor</node>
+        <node>NGramDescriptor</node>
+        <node>TestElementAnnotatorDescriptor</node>
+      </fixedFlow>
+    </flowConstraints>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs/>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>
