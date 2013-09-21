@@ -31,7 +31,7 @@ import edu.stanford.nlp.util.CoreMap;
  * @author Hector
  *
  */
-public class StanfordCorenlpTokenizer extends JCasAnnotator_ImplBase {
+public class StanfordCorenlpAnnotator extends JCasAnnotator_ImplBase {
 
 	/* (non-Javadoc)
 	 * @see org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)

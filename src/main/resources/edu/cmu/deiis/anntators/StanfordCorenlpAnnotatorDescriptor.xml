@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>edu.cmu.deiis.annotators.StanfordCorenlpTokenizer</annotatorImplementationName>
+  <annotatorImplementationName>edu.cmu.deiis.annotators.StanfordCorenlpAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>StanfordTokenizerDescriptor</name>
+    <name>StanfordCorenlpAnnotatorDescriptor</name>
     <description>This analysis engine uses the Stanford Corenlp toolkit to tokenize the article.</description>
     <version>1.0</version>
     <vendor/>
