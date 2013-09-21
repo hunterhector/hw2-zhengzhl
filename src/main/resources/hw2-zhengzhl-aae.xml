@@ -5,8 +5,8 @@
     <delegateAnalysisEngine key="TestElementAnnotatorDescriptor">
       <import name="edu.cmu.deiis.anntators.TestElementAnnotatorDescriptor"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="StanfordTokenizerDescriptor">
-      <import name="edu.cmu.deiis.anntators.StanfordTokenizerDescriptor"/>
+    <delegateAnalysisEngine key="StanfordCorenlpAnnotatorDescriptor">
+      <import name="edu.cmu.deiis.anntators.StanfordCorenlpAnnotatorDescriptor"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="NGramDescriptor">
       <import name="edu.cmu.deiis.anntators.NGramDescriptor"/>
@@ -21,7 +21,7 @@
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
-        <node>StanfordTokenizerDescriptor</node>
+        <node>StanfordCorenlpAnnotatorDescriptor</node>
         <node>NGramDescriptor</node>
         <node>TestElementAnnotatorDescriptor</node>
       </fixedFlow>
