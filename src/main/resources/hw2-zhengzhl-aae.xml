@@ -9,6 +9,9 @@
     <delegateAnalysisEngine key="StanfordCorenlpAnnotatorDescriptor">
       <import name="edu.cmu.deiis.anntators.StanfordCorenlpAnnotatorDescriptor"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="evaluationDescriptor">
+      <import name="edu.cmu.deiis.anntators.evaluationDescriptor"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="CosineRankerDescriptor">
       <import name="edu.cmu.deiis.anntators.CosineRankerDescriptor"/>
     </delegateAnalysisEngine>
@@ -50,6 +53,7 @@
         <node>NGramDescriptor</node>
         <node>TestElementAnnotatorDescriptor</node>
         <node>CosineRankerDescriptor</node>
+        <node>evaluationDescriptor</node>
       </fixedFlow>
     </flowConstraints>
     <fsIndexCollection/>
