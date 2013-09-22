@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
@@ -7,6 +8,9 @@
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="StanfordCorenlpAnnotatorDescriptor">
       <import name="edu.cmu.deiis.anntators.StanfordCorenlpAnnotatorDescriptor"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="CosineRankerDescriptor">
+      <import name="edu.cmu.deiis.anntators.CosineRankerDescriptor"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="NGramDescriptor">
       <import name="edu.cmu.deiis.anntators.NGramDescriptor"/>
@@ -17,13 +21,35 @@
     <description/>
     <version>1.0</version>
     <vendor/>
-    <configurationParameters/>
-    <configurationParameterSettings/>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>n</name>
+        <description>the "n" grams the need to be annotated</description>
+        <type>Integer</type>
+        <multiValued>true</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>NGramDescriptor/n</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>n</name>
+        <value>
+          <array>
+            <integer>2</integer>
+            <integer>3</integer>
+          </array>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
         <node>StanfordCorenlpAnnotatorDescriptor</node>
         <node>NGramDescriptor</node>
         <node>TestElementAnnotatorDescriptor</node>
+        <node>CosineRankerDescriptor</node>
       </fixedFlow>
     </flowConstraints>
     <fsIndexCollection/>
