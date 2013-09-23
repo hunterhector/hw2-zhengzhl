@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.uima.UimaContext;
@@ -16,7 +17,12 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+
+import edu.cmu.deiis.types.Annotation;
 import edu.cmu.deiis.types.Answer;
+import edu.cmu.deiis.types.NGram;
 import edu.cmu.deiis.types.Question;
 import edu.cmu.deiis.types.Token;
 
@@ -31,7 +37,7 @@ public class CosineBasedAnswerRanker extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext aContext)
 			throws ResourceInitializationException {
-		
+
 	}
 
 	/*
@@ -45,15 +51,18 @@ public class CosineBasedAnswerRanker extends JCasAnnotator_ImplBase {
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {
 		Question question = JCasUtil.selectSingle(aJCas, Question.class);
 
-		List<Token> questionTokens = JCasUtil.selectCovered(Token.class,
-				question);
-		Map<String, Integer> questionCounts = getTokenCounts(questionTokens);
+		Map<String, Integer> questionTokenCounts = getCoveredTypeCounts(question,
+				Token.class);
+		Table<Integer, String, Integer> questionNGramCounts = getNgramCounts(question);
 
 		for (Answer answer : JCasUtil.select(aJCas, Answer.class)) {
-			List<Token> answerTokens = JCasUtil.selectCovered(Token.class,
-					answer);
-			Map<String, Integer> answerCounts = getTokenCounts(answerTokens);
-			double score = getCosine(questionCounts, answerCounts);
+			Map<String, Integer> answerCounts = getCoveredTypeCounts(answer,
+					Token.class);
+			double score = getCosine(questionTokenCounts, answerCounts);
+			
+			Table<Integer, String, Integer> answerNGramCounts = getNgramCounts(answer);
+
+			
 			answer.setConfidence(score);
 			answer.setCasProcessorId(this.getClass().getName());
 		}
@@ -82,22 +91,39 @@ public class CosineBasedAnswerRanker extends JCasAnnotator_ImplBase {
 		return length;
 	}
 
-	private Map<String, Integer> getTokenCounts(List<Token> tokens) {
-		Map<String, Integer> questionCounts = new HashMap<String, Integer>();
-		for (Token token : tokens) {
+	private <A extends Annotation, T extends Annotation> Map<String, Integer> getCoveredTypeCounts(
+			A annotation, Class<T> clazz) {
+		Map<String, Integer> annotationCounts = new HashMap<String, Integer>();
+		for (T token : JCasUtil.selectCovered(clazz, annotation)) {
 			String text = token.getCoveredText();
 			// don't count punctuations
 			if (Pattern.matches("\\p{Punct}", text)) {
 				continue;
 			}
-			if (questionCounts.containsKey(text)) {
-				questionCounts.put(text, questionCounts.get(token) + 1);
+			if (annotationCounts.containsKey(text)) {
+				annotationCounts.put(text, annotationCounts.get(token) + 1);
 			} else {
-				questionCounts.put(text, 1);
+				annotationCounts.put(text, 1);
 			}
 		}
-		return questionCounts;
+		return annotationCounts;
 	}
 
+	private <T extends Annotation> Table<Integer, String, Integer> getNgramCounts(
+			T annotation) {
+		Table<Integer, String, Integer> ngramCounts = HashBasedTable.create();
 
+		for (NGram ngram : JCasUtil.selectCovered(NGram.class, annotation)) {
+			Integer n = ngram.getN();
+			String ngramText = ngram.getCoveredText();
+			if (ngramCounts.contains(n, ngramText)) {
+				Integer oldCount = ngramCounts.get(n, ngramText);
+				ngramCounts.put(n, ngramText, oldCount + 1);
+			} else {
+				ngramCounts.put(n, ngramText, 1);
+			}
+		}
+
+		return ngramCounts;
+	}
 }

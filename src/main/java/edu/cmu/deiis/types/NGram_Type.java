@@ -13,7 +13,7 @@ import org.apache.uima.cas.impl.FeatureImpl;
 import org.apache.uima.cas.Feature;
 
 /** 
- * Updated by JCasGen Sat Sep 21 17:44:12 EDT 2013
+ * Updated by JCasGen Mon Sep 23 13:42:36 EDT 2013
  * @generated */
 public class NGram_Type extends Annotation_Type {
   /** @generated */
@@ -97,6 +97,24 @@ public class NGram_Type extends Annotation_Type {
     ll_cas.ll_setStringValue(addr, casFeatCode_elementType, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_n;
+  /** @generated */
+  final int     casFeatCode_n;
+  /** @generated */ 
+  public int getN(int addr) {
+        if (featOkTst && casFeat_n == null)
+      jcas.throwFeatMissing("n", "edu.cmu.deiis.types.NGram");
+    return ll_cas.ll_getIntValue(addr, casFeatCode_n);
+  }
+  /** @generated */    
+  public void setN(int addr, int v) {
+        if (featOkTst && casFeat_n == null)
+      jcas.throwFeatMissing("n", "edu.cmu.deiis.types.NGram");
+    ll_cas.ll_setIntValue(addr, casFeatCode_n, v);}
+    
+  
 
 
 
@@ -113,6 +131,10 @@ public class NGram_Type extends Annotation_Type {
  
     casFeat_elementType = jcas.getRequiredFeatureDE(casType, "elementType", "uima.cas.String", featOkTst);
     casFeatCode_elementType  = (null == casFeat_elementType) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_elementType).getCode();
+
+ 
+    casFeat_n = jcas.getRequiredFeatureDE(casType, "n", "uima.cas.Integer", featOkTst);
+    casFeatCode_n  = (null == casFeat_n) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_n).getCode();
 
   }
 }

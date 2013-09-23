@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import edu.cmu.deiis.types.NGram;
+import edu.cmu.deiis.types.Sentence;
 import edu.cmu.deiis.types.Token;
 
 /**
@@ -42,25 +43,26 @@ public class NGramAnnotator extends JCasAnnotator_ImplBase {
 	 */
 	@Override
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {
-		
-		List <Token> tokenList = new ArrayList<Token>(JCasUtil.select(aJCas,Token.class));
-		
-		for (int tokenIndexI = 0;tokenIndexI< tokenList.size();tokenIndexI++){
-			for (int t = 0;t<listOfN.length;t++){
-				int n  = listOfN[t];
-				int tokenIndexJ = tokenIndexI + n-1;
-				if (tokenIndexJ < tokenList.size()){
-					int tokenIBegin = tokenList.get(tokenIndexI).getBegin();
-					int tokenJEnd = tokenList.get(tokenIndexJ).getEnd();
-					NGram ngram = new NGram(aJCas);
-					ngram.setBegin(tokenIBegin);
-					ngram.setEnd(tokenJEnd);
-					ngram.setElements(FSCollectionFactory.createFSArray(aJCas, JCasUtil.selectCovered(Token.class, ngram)));
-					ngram.setElementType(Token.class.getSimpleName());
-					ngram.addToIndexes();
+		for (Sentence sent : JCasUtil.select(aJCas, Sentence.class)){
+			List <Token> tokenList = new ArrayList<Token>(JCasUtil.selectCovered(Token.class, sent));	
+			for (int tokenIndexI = 0;tokenIndexI< tokenList.size();tokenIndexI++){
+				for (int t = 0;t<listOfN.length;t++){
+					int n  = listOfN[t];
+					int tokenIndexJ = tokenIndexI + n-1;
+					if (tokenIndexJ < tokenList.size()){
+						int tokenIBegin = tokenList.get(tokenIndexI).getBegin();
+						int tokenJEnd = tokenList.get(tokenIndexJ).getEnd();
+						NGram ngram = new NGram(aJCas);
+						ngram.setBegin(tokenIBegin);
+						ngram.setEnd(tokenJEnd);
+						ngram.setElements(FSCollectionFactory.createFSArray(aJCas, JCasUtil.selectCovered(Token.class, ngram)));
+						ngram.setN(n);
+						ngram.setElementType(Token.class.getSimpleName());
+						ngram.addToIndexes();
+					}
 				}
 			}
-		}
+		}	
 	}
 
 }

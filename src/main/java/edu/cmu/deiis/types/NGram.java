@@ -11,7 +11,7 @@ import org.apache.uima.jcas.cas.FSArray;
 
 
 /** 
- * Updated by JCasGen Sat Sep 21 17:44:12 EDT 2013
+ * Updated by JCasGen Mon Sep 23 13:42:36 EDT 2013
  * XML source: /Users/hector/Documents/homeworks/11791/hw2-zhengzhl/src/main/resources/descriptors/deiis_types.xml
  * @generated */
 public class NGram extends Annotation {
@@ -112,6 +112,24 @@ public class NGram extends Annotation {
     if (NGram_Type.featOkTst && ((NGram_Type)jcasType).casFeat_elementType == null)
       jcasType.jcas.throwFeatMissing("elementType", "edu.cmu.deiis.types.NGram");
     jcasType.ll_cas.ll_setStringValue(addr, ((NGram_Type)jcasType).casFeatCode_elementType, v);}    
+   
+    
+  //*--------------*
+  //* Feature: n
+
+  /** getter for n - gets The number of elements in this gram
+   * @generated */
+  public int getN() {
+    if (NGram_Type.featOkTst && ((NGram_Type)jcasType).casFeat_n == null)
+      jcasType.jcas.throwFeatMissing("n", "edu.cmu.deiis.types.NGram");
+    return jcasType.ll_cas.ll_getIntValue(addr, ((NGram_Type)jcasType).casFeatCode_n);}
+    
+  /** setter for n - sets The number of elements in this gram 
+   * @generated */
+  public void setN(int v) {
+    if (NGram_Type.featOkTst && ((NGram_Type)jcasType).casFeat_n == null)
+      jcasType.jcas.throwFeatMissing("n", "edu.cmu.deiis.types.NGram");
+    jcasType.ll_cas.ll_setIntValue(addr, ((NGram_Type)jcasType).casFeatCode_n, v);}    
   }
 
     
