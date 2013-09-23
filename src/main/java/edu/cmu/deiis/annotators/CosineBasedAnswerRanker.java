@@ -9,10 +9,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
 
 import edu.cmu.deiis.types.Answer;
 import edu.cmu.deiis.types.Question;
@@ -23,6 +25,14 @@ import edu.cmu.deiis.types.Token;
  * 
  */
 public class CosineBasedAnswerRanker extends JCasAnnotator_ImplBase {
+	double totalScore = 0.0;
+	double documentCount = 0;
+
+	@Override
+	public void initialize(UimaContext aContext)
+			throws ResourceInitializationException {
+		
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -38,13 +48,12 @@ public class CosineBasedAnswerRanker extends JCasAnnotator_ImplBase {
 		List<Token> questionTokens = JCasUtil.selectCovered(Token.class,
 				question);
 		Map<String, Integer> questionCounts = getTokenCounts(questionTokens);
-		
+
 		for (Answer answer : JCasUtil.select(aJCas, Answer.class)) {
 			List<Token> answerTokens = JCasUtil.selectCovered(Token.class,
 					answer);
 			Map<String, Integer> answerCounts = getTokenCounts(answerTokens);
-			double score = getCosine(questionCounts,
-					answerCounts);
+			double score = getCosine(questionCounts, answerCounts);
 			answer.setConfidence(score);
 			answer.setCasProcessorId(this.getClass().getName());
 		}
@@ -57,16 +66,16 @@ public class CosineBasedAnswerRanker extends JCasAnnotator_ImplBase {
 			String token = tokenEntry.getKey();
 			Integer count = tokenEntry.getValue();
 			if (tokens2.containsKey(token)) {
-				score += tokens2.get(token)*count;
+				score += tokens2.get(token) * count;
 			}
 		}
-		
-		return score /Math.sqrt((getLength(tokens1)*getLength(tokens2)));
+
+		return score / Math.sqrt((getLength(tokens1) * getLength(tokens2)));
 	}
-	
-	private double getLength(Map<String,Integer> tokens){
+
+	private double getLength(Map<String, Integer> tokens) {
 		double length = 0;
-		for (Entry<String,Integer> tokenEntry : tokens.entrySet()){
+		for (Entry<String, Integer> tokenEntry : tokens.entrySet()) {
 			Integer value = tokenEntry.getValue();
 			length += value * value;
 		}
@@ -77,9 +86,9 @@ public class CosineBasedAnswerRanker extends JCasAnnotator_ImplBase {
 		Map<String, Integer> questionCounts = new HashMap<String, Integer>();
 		for (Token token : tokens) {
 			String text = token.getCoveredText();
-			//don't count punctuations
+			// don't count punctuations
 			if (Pattern.matches("\\p{Punct}", text)) {
-			    continue;
+				continue;
 			}
 			if (questionCounts.containsKey(text)) {
 				questionCounts.put(text, questionCounts.get(token) + 1);
@@ -89,5 +98,6 @@ public class CosineBasedAnswerRanker extends JCasAnnotator_ImplBase {
 		}
 		return questionCounts;
 	}
+
 
 }
