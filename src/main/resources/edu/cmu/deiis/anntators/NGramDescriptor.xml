@@ -22,8 +22,8 @@
         <name>n</name>
         <value>
           <array>
-            <integer>1</integer>
             <integer>2</integer>
+            <integer>3</integer>
           </array>
         </value>
       </nameValuePair>

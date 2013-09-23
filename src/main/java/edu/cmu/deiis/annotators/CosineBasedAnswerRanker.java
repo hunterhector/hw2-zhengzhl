@@ -4,10 +4,8 @@
 package edu.cmu.deiis.annotators;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.uima.UimaContext;
@@ -22,6 +20,7 @@ import com.google.common.collect.Table;
 
 import edu.cmu.deiis.types.Annotation;
 import edu.cmu.deiis.types.Answer;
+import edu.cmu.deiis.types.EntityMention;
 import edu.cmu.deiis.types.NGram;
 import edu.cmu.deiis.types.Question;
 import edu.cmu.deiis.types.Token;
@@ -51,19 +50,55 @@ public class CosineBasedAnswerRanker extends JCasAnnotator_ImplBase {
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {
 		Question question = JCasUtil.selectSingle(aJCas, Question.class);
 
-		Map<String, Integer> questionTokenCounts = getCoveredTypeCounts(question,
-				Token.class);
+		Map<String, Integer> questionTokenCounts = getCoveredTypeCounts(
+				question, Token.class);
+		Map<String, Integer> questionNeCounts = getCoveredTypeCounts(question,
+				EntityMention.class);
 		Table<Integer, String, Integer> questionNGramCounts = getNgramCounts(question);
+		Map<Integer, Map<String, Integer>> questionNGramRows = questionNGramCounts
+				.rowMap();
 
 		for (Answer answer : JCasUtil.select(aJCas, Answer.class)) {
-			Map<String, Integer> answerCounts = getCoveredTypeCounts(answer,
-					Token.class);
-			double score = getCosine(questionTokenCounts, answerCounts);
+			Map<String, Integer> answerTokenCounts = getCoveredTypeCounts(
+					answer, Token.class);
+			Map<String, Integer> answerNeCounts = getCoveredTypeCounts(answer,
+					EntityMention.class);
+
+			double totalScore = 0;
+
+			double tokenScore = getCosine(questionTokenCounts,
+					answerTokenCounts);
+			double neScore = getCosine(questionNeCounts, answerNeCounts);
 			
+			totalScore += (tokenScore * 0.5 + neScore * 0.3);
+
 			Table<Integer, String, Integer> answerNGramCounts = getNgramCounts(answer);
 
+			int possibleNgramCount = 0;
+			double allNgramScore = 0;
+			for (Entry<Integer, Map<String, Integer>> answerNGramEntry : answerNGramCounts
+					.rowMap().entrySet()) {
+				Integer n = answerNGramEntry.getKey();
+				double nGramScore = getCosine(questionNGramRows.get(n),
+						answerNGramEntry.getValue());
+				possibleNgramCount++;
+
+				allNgramScore += nGramScore;
+			}
+
+			// no ngram found, give zero
+			if (possibleNgramCount > 0) {
+				allNgramScore /= possibleNgramCount;
+			}
+
+
+			System.out.println("Token score");
+			System.out.println("Ne score");
+			System.out.println("All ngram score");
 			
-			answer.setConfidence(score);
+			totalScore += allNgramScore * 0.2;
+
+			answer.setConfidence(totalScore);
 			answer.setCasProcessorId(this.getClass().getName());
 		}
 	}

@@ -29,8 +29,8 @@ public class TestElementAnnotator extends JCasAnnotator_ImplBase {
 	 */
 	@Override
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {
-		String documentText = JCasUtil.selectSingle(aJCas,
-				DocumentAnnotation.class).getCoveredText();
+		String documentText = aJCas.getDocumentText();
+		
 		String[] lines = documentText.split("\n");
 
 		int lineOffset = 0;
