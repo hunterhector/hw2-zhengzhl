@@ -24,14 +24,13 @@ import edu.cmu.deiis.types.Token;
  */
 public class NGramAnnotator extends JCasAnnotator_ImplBase {
 	Integer[] listOfN;
-	
+
 	public void initialize(UimaContext aContext)
 			throws ResourceInitializationException {
 		super.initialize(aContext);
 		// Get config. parameter values
-		
-		 listOfN = (Integer[]) aContext
-				.getConfigParameterValue("n");
+
+		listOfN = (Integer[]) aContext.getConfigParameterValue("n");
 	}
 
 	/*
@@ -41,28 +40,34 @@ public class NGramAnnotator extends JCasAnnotator_ImplBase {
 	 * org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org
 	 * .apache.uima.jcas.JCas)
 	 */
+	/**
+	 * The main process iterate through NGram over each sentence
+	 */
 	@Override
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {
-		for (Sentence sent : JCasUtil.select(aJCas, Sentence.class)){
-			List <Token> tokenList = new ArrayList<Token>(JCasUtil.selectCovered(Token.class, sent));	
-			for (int tokenIndexI = 0;tokenIndexI< tokenList.size();tokenIndexI++){
-				for (int t = 0;t<listOfN.length;t++){
-					int n  = listOfN[t];
-					int tokenIndexJ = tokenIndexI + n-1;
-					if (tokenIndexJ < tokenList.size()){
+		for (Sentence sent : JCasUtil.select(aJCas, Sentence.class)) {
+			List<Token> tokenList = new ArrayList<Token>(
+					JCasUtil.selectCovered(Token.class, sent));
+			for (int tokenIndexI = 0; tokenIndexI < tokenList.size(); tokenIndexI++) {
+				for (int t = 0; t < listOfN.length; t++) {
+					int n = listOfN[t];
+					int tokenIndexJ = tokenIndexI + n - 1;
+					if (tokenIndexJ < tokenList.size()) {
 						int tokenIBegin = tokenList.get(tokenIndexI).getBegin();
 						int tokenJEnd = tokenList.get(tokenIndexJ).getEnd();
 						NGram ngram = new NGram(aJCas);
 						ngram.setBegin(tokenIBegin);
 						ngram.setEnd(tokenJEnd);
-						ngram.setElements(FSCollectionFactory.createFSArray(aJCas, JCasUtil.selectCovered(Token.class, ngram)));
+						ngram.setElements(FSCollectionFactory.createFSArray(
+								aJCas,
+								JCasUtil.selectCovered(Token.class, ngram)));
 						ngram.setN(n);
 						ngram.setElementType(Token.class.getSimpleName());
 						ngram.addToIndexes();
 					}
 				}
 			}
-		}	
+		}
 	}
 
 }

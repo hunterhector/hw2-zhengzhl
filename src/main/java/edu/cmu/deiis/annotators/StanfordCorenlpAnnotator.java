@@ -45,7 +45,7 @@ public class StanfordCorenlpAnnotator extends JCasAnnotator_ImplBase {
 		// props.put("annotators", "tokenize");
 
 		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-		
+
 		Annotation document = new Annotation(documentText);
 		pipeline.annotate(document);
 
@@ -54,6 +54,7 @@ public class StanfordCorenlpAnnotator extends JCasAnnotator_ImplBase {
 		int neBegin = 0;
 		int neEnd = 0;
 
+		// Iterate through the Stanford sentences
 		for (CoreMap sent : document.get(SentencesAnnotation.class)) {
 			int sentBegin = sent.get(CharacterOffsetBeginAnnotation.class);
 			int sentEnd = sent.get(CharacterOffsetEndAnnotation.class);
@@ -61,6 +62,7 @@ public class StanfordCorenlpAnnotator extends JCasAnnotator_ImplBase {
 			Sentence sSent = new Sentence(aJCas, sentBegin, sentEnd);
 			sSent.addToIndexes();
 
+			// Iterate throught the Stanford Tokens
 			for (CoreLabel token : sent.get(TokensAnnotation.class)) {
 				int beginIndex = token
 						.get(CharacterOffsetBeginAnnotation.class);
@@ -84,7 +86,6 @@ public class StanfordCorenlpAnnotator extends JCasAnnotator_ImplBase {
 						preNe = ne;
 					} else {
 						if (!preNe.equals("O")) {// "O" represent no label
-													// (other)
 							EntityMention sne = new EntityMention(aJCas);
 							sne.setBegin(neBegin);
 							sne.setEnd(neEnd);
