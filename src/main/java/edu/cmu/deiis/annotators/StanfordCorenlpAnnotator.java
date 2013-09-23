@@ -27,6 +27,10 @@ import edu.stanford.nlp.util.CoreMap;
 /**
  * @author Hector
  * 
+ *         This annotator use Stanford Corenlp toolkit to annotate tokens,
+ *         sentences and named entities. This annotator is generic, it does not
+ *         consider whether there are Question or Answer annotation, so this
+ *         annotator is free to be plugged in any pipeline
  */
 public class StanfordCorenlpAnnotator extends JCasAnnotator_ImplBase {
 

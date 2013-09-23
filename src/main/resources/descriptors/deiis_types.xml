@@ -24,7 +24,7 @@
     </typeDescription>
     <typeDescription>
       <name>edu.cmu.deiis.types.Token</name>
-      <description/>
+      <description>Annotation a token</description>
       <supertypeName>edu.cmu.deiis.types.Annotation</supertypeName>
       <features>
         <featureDescription>
@@ -76,7 +76,7 @@
     </typeDescription>
     <typeDescription>
       <name>edu.cmu.deiis.types.Question</name>
-      <description/>
+      <description>Annotate a question</description>
       <supertypeName>edu.cmu.deiis.types.Annotation</supertypeName>
     </typeDescription>
     <typeDescription>
