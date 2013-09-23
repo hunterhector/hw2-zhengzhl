@@ -92,9 +92,9 @@ public class CosineBasedAnswerRanker extends JCasAnnotator_ImplBase {
 			}
 
 
-			System.out.println("Token score");
-			System.out.println("Ne score");
-			System.out.println("All ngram score");
+			System.out.println("Token score "+tokenScore);
+			System.out.println("Ne score "+neScore);
+			System.out.println("All ngram score "+allNgramScore);
 			
 			totalScore += allNgramScore * 0.2;
 
