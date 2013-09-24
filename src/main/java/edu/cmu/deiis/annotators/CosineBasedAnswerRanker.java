@@ -93,8 +93,15 @@ public class CosineBasedAnswerRanker extends JCasAnnotator_ImplBase {
 			for (Entry<Integer, Map<String, Integer>> answerNGramEntry : answerNGramCounts
 					.rowMap().entrySet()) {
 				Integer n = answerNGramEntry.getKey();
-				double nGramScore = getCosine(questionNGramRows.get(n),
-						answerNGramEntry.getValue());
+
+				double nGramScore;
+
+				if (!questionNGramRows.containsKey(n)) {
+					nGramScore = 0;
+				} else {
+					nGramScore = getCosine(questionNGramRows.get(n),
+							answerNGramEntry.getValue());
+				}
 				possibleNgramCount++;
 
 				allNgramScore += nGramScore;
